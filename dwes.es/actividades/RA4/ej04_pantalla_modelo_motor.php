@@ -7,51 +7,33 @@ session_start();
 ob_start();
 
 //fichero de funciones
-require_once( $_SERVER['DOCUMENT_ROOT'] . '/includes/funciones.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/includes/funciones.php');
 
 inicio_html('Ejercicio 4', ['/estilos/general.css']);
 
 
 $modelo_vehiculos = [
-    "Monroy" => 20000,
-    "Muchopami" => 21000,
-    "Zapatoveloz" => 22000,
-    "Guperino" => 25500,
-    "Alomejor" => 29750,
-    "Telapegas" => 32550
+    ['nombre' => 'Muchopami', 'precio' => 21000],
+    ['nombre' => 'Zapatoveloz', 'precio' => 22000],
+    ['nombre' => 'Guperino', 'precio' => 25500],
+    ['nombre' => 'Alomejor', 'precio' => 29750],
+    ['nombre' => 'Telapegas', 'precio' => 32550]
+
 ];
+
 
 $tipo_motor = [
-    "Gasolina" => 0,
-    "Diesel" => 2000,
-    "Híbrido" => 5000,
-    "Electrico" => 10000
-];
-
-$pintura_vehiculos = [
-    "Gris triste" => 0,
-    "Rojo sangre" => 250,
-    "Rojo pasión" => 150,
-    "Azul noche" => 175,
-    "Caramelo" => 300,
-    "Mango" => 275
-];
-
-$extras_vehiculos = [
-    "Navegador GPS" => 500,
-    "Calefacción asientos" => 250,
-    "Antena aleta tiburón" => 50,
-    "Acceso y arranque sin llave" => 150,
-    "Arranque en pendiente" => 200,
-    "Cargador inalámbrico" => 300,
-    "Control de crucero" => 500,
-    "Detectar ángulo muerto" => 350,
-    "Faros led automáticos" => 400,
-    "Frenada emergencia" => 375
+    ['nombre' => 'Gasolina', 'precio' => 0],
+    ['nombre' => 'Diesel', 'precio' => 2000],
+    ['nombre' => 'Híbrido', 'precio' => 5000],
+    ['nombre' => 'Electrico', 'precio' => 10000]
 ];
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET'/* && $_SESSION['nombre'] && $_SESSION['telefono'] && $_SESSION['email']*/) {
+
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && $_SESSION['nombre'] && $_SESSION['telefono'] && $_SESSION['email']) {
 ?>
     <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
         <fieldset>
@@ -60,45 +42,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'/* && $_SESSION['nombre'] && $_SESSION['t
             <label for="modelo">modelo</label><br>
             <select name="modelo" id="modelo">
                 <?php
-                    foreach ($modelo_vehiculos as $modelo => $precio) {
-                        echo "<option value='{$modelo}>{$modelo} => {$precio}</option>";
-                    }
+                foreach ($modelo_vehiculos as $modelo) {
+                    echo "<option value='{$modelo['nombre']}'>{$modelo['nombre']} => {$modelo['precio']}</option>";
+                }
                 ?>
             </select>
             <br><br>
 
             <label for="motor">motor</label><br>
             <?php
-                foreach ($extras_vehiculos as $extras => $precio) {
-                    echo "<input type='radio' name='motor' id='motor' value='{$extras}'>{$extras} => {$precio} <br>";
-                }
+            foreach ($tipo_motor as $motor) {
+                echo "<input type='radio' name='motor' id='motor' value='{$motor['nombre']}'>{$motor['nombre']} => {$motor['precio']}<br>";
+            }
             ?>
             <br>
 
-            <label for="pintura">pintura</label><br>
-            <select name="pintura" id="pintura">    
-                <?php
-                    foreach ($pintura_vehiculos as $pintura => $precio) {
-                        echo "<option value='{$pintura}>{$pintura} => {$precio}</option>";
-                    }
-                ?>
-            </select>
-            <br><br>
-
-            <label for="extras">extras</label><br>
-            <?php
-                foreach ($extras_vehiculos as $extras => $precio) {
-                    echo "<input type='checkbox' name='extras[]' id='extras' value='{$extras}'>{$extras} => {$precio}<br>";
-                }
-            ?>
-
-
-            
+            <input type="submit" value="confirmar">
         </fieldset>
     </form>
 <?php
-} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    # code...
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SESSION['nombre'] && $_SESSION['telefono'] && $_SESSION['email']) {
+
+    $modelo = filter_input(INPUT_POST, 'modelo', FILTER_SANITIZE_SPECIAL_CHARS);
+    $modeloPrecio = key_exists($modelo, $modelo_vehiculos) ? $modelo_vehiculos[$modelo]['precio'] : 0;
+    
+    $motor = filter_input(INPUT_POST, 'motor', in_array($modelo, $modelo_vehiculos));
+    $motorPrecio = key_exists($motor, $motorPrecio) ? $motorPrecio[$motor]['precio'] : 0;
+ 
+
+    $_SESSION['modelo'] = $modelo;
+    $_SESSION['modeloPrecio'] = $modeloPrecio;
+    $_SESSION['motor'] = $motor;
+    $_SESSION['motorPrecio'] = $motorPrecio;
+
+    header('Location: ej04_pantalla_pintura_extras.php');
+} else {
+    header('Location: ej04.php');
+
 }
 
 //recogemos los datos de ob en una variable
