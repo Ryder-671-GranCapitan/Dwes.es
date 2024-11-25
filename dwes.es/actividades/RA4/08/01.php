@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             //generamos el token de la cookie
             $jwt = generar_token($usuario);
             $expires = time() + 120 * 60;
-            setcookie('jwt', $jwt, $expires, '/', '');
+            setcookie('jwt', $jwt, $expires, '/', 'dwes.es');
             header('location: /actividades/RA4/08/02.php');
 
         } else {

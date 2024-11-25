@@ -1,10 +1,9 @@
 <?php
 
 function autenticar($usuario, $clave) {
-    $usuarios = ['pepe' => ['email' => 'pepe@mail.com', 
-                            'clave' => password_hash("usuario", PASSWORD_DEFAULT)],
-                 'manolo' => ['email' => 'manolo@mail.com',
-                              'clave' => password_hash("usuario", PASSWORD_DEFAULT)]
+    
+    $usuarios = ['pepe@mail.com' => ['clave' => password_hash("usuario", PASSWORD_DEFAULT)],
+                 'manolo@mail.com' => ['clave' => password_hash("usuario", PASSWORD_DEFAULT)]
     ];
 
 
