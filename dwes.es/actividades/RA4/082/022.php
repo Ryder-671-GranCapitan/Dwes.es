@@ -15,6 +15,7 @@ inicio_html('Pantalla bienvenida', ['/estilos/general.css']);
 $jwt = $_COOKIE['jwt'];
 if (! $payload = verificar_token($jwt)) {
     cerrar_sesion();
+    exit(1);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' ) {
