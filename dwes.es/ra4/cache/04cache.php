@@ -53,5 +53,6 @@ inicio_html("Caché del navegador", ["/estilos/general.css"]);
 echo "<header>Probando la caché del navegador</header>";
 echo "<h3>Este cambio se hace mientras la página está cacheada y reciente</h3>";
 fin_html();
+
 ?>
 

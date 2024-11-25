@@ -21,6 +21,7 @@ $modelo_vehiculos = [
     "Telapegas" => 32550
 ];
 
+
 $tipo_motor = [
     "Gasolina" => 0,
     "Diesel" => 2000,

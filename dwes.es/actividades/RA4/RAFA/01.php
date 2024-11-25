@@ -42,6 +42,7 @@ echo'<h1>PIZZAS</h1>';
 
 <?php
 
+
 //recogemos los datos de ob en una variable
 $ob_datos = ob_get_contents();
 
